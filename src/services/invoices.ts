@@ -31,8 +31,6 @@ export async function getInvoices(params: GetInvoicesParams) {
   const { page, perPage, customerNumber, referenceMonth } =
     getInvoicesParamsSchema.parse(params)
 
-  console.log({ page, perPage, customerNumber, referenceMonth })
-
   const response = await api.get<GetInvoicesResponse>('/invoices', {
     params: {
       page,
