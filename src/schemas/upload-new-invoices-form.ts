@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { ACCEPTED_TYPES, MAX_FILE_SIZE } from '~/lib/file'
 
 import { invoiceSchema } from './invoice'
-import { paginationSchema } from './paginate'
 
 export const uploadNewInvoicesFormSchema = z.object({
   invoicesFiles: z
@@ -21,9 +20,7 @@ export const uploadNewInvoicesFormSchema = z.object({
 
 export type UploadNewInvoicesForm = z.infer<typeof uploadNewInvoicesFormSchema>
 
-export const uploadNewInvoicesResponseSchema = paginationSchema.extend({
-  data: z.array(invoiceSchema),
-})
+export const uploadNewInvoicesResponseSchema = z.array(invoiceSchema)
 
 export type UploadNewInvoicesResponse = z.infer<
   typeof uploadNewInvoicesResponseSchema

@@ -1,3 +1,8 @@
+import {
+  GetInvoicesParams,
+  getInvoicesParamsSchema,
+  GetInvoicesResponse,
+} from '~/schemas/get-invoices'
 import { UploadNewInvoicesResponse } from '~/schemas/upload-new-invoices-form'
 
 import { api } from './api'
@@ -18,6 +23,24 @@ export async function uploadInvoices(files: FileList) {
       },
     },
   )
+
+  return response.data
+}
+
+export async function getInvoices(params: GetInvoicesParams) {
+  const { page, perPage, customerNumber, referenceMonth } =
+    getInvoicesParamsSchema.parse(params)
+
+  console.log({ page, perPage, customerNumber, referenceMonth })
+
+  const response = await api.get<GetInvoicesResponse>('/invoices', {
+    params: {
+      page,
+      perPage,
+      customerNumber,
+      referenceMonth,
+    },
+  })
 
   return response.data
 }

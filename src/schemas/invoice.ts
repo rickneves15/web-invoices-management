@@ -13,7 +13,7 @@ export const invoiceSchema = z.object({
   compensatedEnergyQuantity: z.number(),
   compensatedEnergyAmount: z.number(),
   municipalPublicLightingContribution: z.number(),
-  pdfUrl: z.string().url(),
+  invoiceUrl: z.string().url(),
   customerId: z.number(),
   customer: z.object({
     id: z.string().cuid(),
