@@ -1,5 +1,8 @@
 {
-  "extends": ["@rocketseat/eslint-config/next"],
+  "extends": [
+    "@rocketseat/eslint-config/next",
+    "plugin:@tanstack/query/recommended"
+  ],
   "plugins": ["eslint-plugin-import-helpers"],
   "rules": {
     "import-helpers/order-imports": [

@@ -6,6 +6,7 @@ import { Toaster } from 'sonner'
 import './globals.css'
 
 import { Header } from '~/components/header'
+import { ReactQueryProvider } from '~/providers/react-query-provider'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -33,12 +34,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <main className="flex p-8 pt-6">
-          <Suspense>{children}</Suspense>
-        </main>
+        <ReactQueryProvider>
+          <Header />
+          <main className="flex p-8 pt-6">
+            <Suspense>{children}</Suspense>
+          </main>
 
-        <Toaster richColors />
+          <Toaster richColors />
+        </ReactQueryProvider>
       </body>
     </html>
   )
