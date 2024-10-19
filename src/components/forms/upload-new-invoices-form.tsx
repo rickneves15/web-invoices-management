@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AxiosError } from 'axios'
+import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -74,7 +75,14 @@ export function UploadNewInvoicesForm() {
           }}
         />
         <Button className="mt-4 w-full" disabled={form.formState.isSubmitting}>
-          Sent invoices
+          {form.formState.isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Uploading...
+            </>
+          ) : (
+            'Sent invoices'
+          )}
         </Button>
       </form>
     </Form>
