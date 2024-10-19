@@ -24,6 +24,7 @@ import { cn } from '~/lib/utils'
 import { Invoice } from '~/schemas/invoice'
 import { getInvoices } from '~/services/invoices'
 
+import { InvoicesTableFilters } from './invoices-table-filters'
 import { ListInvoiceItem } from './list-invoice-item'
 
 export function ListInvoices() {
@@ -52,74 +53,79 @@ export function ListInvoices() {
   })
 
   const handlePrevious = () => {
-    if (page > 1) {
-      setQueryParams('page', `${page - 1}`)
+    if (invoices?.meta?.prev) {
+      setQueryParams('page', `${invoices?.meta?.prev}`)
     }
   }
 
   const handleNext = () => {
-    if (invoices?.meta?.total) {
-      if (page < invoices?.meta?.total) {
-        setQueryParams('page', `${page + 1}`)
-      }
+    if (invoices?.meta?.next) {
+      setQueryParams('page', `${invoices?.meta?.next}`)
     }
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Client</TableHead>
-            <TableHead className="w-[140px]">Month</TableHead>
-            <TableHead className="w-[140px]">Invoice Amount</TableHead>
-            <TableHead className="w-[170px]">Energy Consumed</TableHead>
-            <TableHead className="w-[180px]">Energy Compensated</TableHead>
-            <TableHead className="w-[132px]">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading && !invoices && <InvoicesTableSkeleton />}
-
-          {invoices &&
-            invoices.data.map((invoice: Invoice) => {
-              return <ListInvoiceItem key={invoice.id} invoice={invoice} />
-            })}
-
-          {invoices && invoices.data.length === 0 && (
+    <>
+      <div className="space-y-2.5">
+        <div className="flex flex-wrap justify-between">
+          <InvoicesTableFilters />
+        </div>
+      </div>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
             <TableRow>
-              <TableCell
-                colSpan={7}
-                className="text-muted-foreground py-10 text-center"
-              >
-                No invoices found
-              </TableCell>
+              <TableHead>Customers</TableHead>
+              <TableHead className="w-[140px]">Month</TableHead>
+              <TableHead className="w-[140px]">Invoice Amount</TableHead>
+              <TableHead className="w-[170px]">Energy Consumed</TableHead>
+              <TableHead className="w-[180px]">Energy Compensated</TableHead>
+              <TableHead className="w-[132px]">Actions</TableHead>
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-      <Pagination className="justify-end p-2">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              href="#"
-              onClick={handlePrevious}
-              className={cn({
-                'cursor-not-allowed opacity-50': page <= 1,
+          </TableHeader>
+          <TableBody>
+            {isLoading && !invoices && <InvoicesTableSkeleton />}
+
+            {invoices &&
+              invoices.data.map((invoice: Invoice) => {
+                return <ListInvoiceItem key={invoice.id} invoice={invoice} />
               })}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              href="#"
-              onClick={handleNext}
-              className={cn({
-                'cursor-not-allowed opacity-50': page > 1,
-              })}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    </div>
+
+            {invoices && invoices.data.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-muted-foreground py-10 text-center"
+                >
+                  No invoices found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <Pagination className="justify-end border border-t p-2">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={handlePrevious}
+                className={cn({
+                  'cursor-not-allowed opacity-50': !invoices?.meta?.prev,
+                })}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={handleNext}
+                className={cn({
+                  'cursor-not-allowed opacity-50': !invoices?.meta?.next,
+                })}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
+    </>
   )
 }
