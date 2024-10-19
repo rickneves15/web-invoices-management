@@ -1,5 +1,5 @@
 import { ListInvoices } from '~/components/lists/list-invoices'
-import Title from '~/components/ui/title'
+import { Title } from '~/components/ui/title'
 
 export default function InvoicesPage() {
   return (
